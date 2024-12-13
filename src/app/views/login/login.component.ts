@@ -3,32 +3,42 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './login.component.html'
+  templateUrl: './login.component.html',
 })
 export class LoginComponent {
   username: string = '';
   password: string = '';
   rememberMe: boolean = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
-  login(event: Event): void {
+  async login(event: Event): Promise<void> {
     event.preventDefault();
-    
+
     // Ici, vous implémenteriez la logique d'authentification
     console.log('Tentative de connexion avec:', {
       username: this.username,
       password: this.password,
-      rememberMe: this.rememberMe
+      rememberMe: this.rememberMe,
     });
 
-    // Si l'authentification réussit
+   try {
+    const response = await this.authService.login({
+      email: this.username,
+      password: this.password,
+    });
+
     this.router.navigate(['/dashboard']);
+   } catch (error) {
+    console.error('Erreur lors de la connexion:', error);
+    }
+
   }
 
   loginWithGoogle(): void {
