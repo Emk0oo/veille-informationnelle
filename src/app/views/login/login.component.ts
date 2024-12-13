@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
+import { ToastService } from '../../services/toast/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,11 @@ export class LoginComponent {
   rememberMe: boolean = false;
   errorMessage: string | null = null;
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private toastService: ToastService
+  ) {}
 
   async login(event: Event): Promise<void> {
     event.preventDefault();
@@ -47,13 +52,17 @@ export class LoginComponent {
 
         // Redirige vers le tableau de bord
         this.router.navigate(['/dashboard']);
+        this.toastService.showToast('Connecté', 'success');
       } else {
+        this.toastService.showToast('Erreur lors de la connexion.', 'error');
         console.error('Erreur:', response.message || response.error);
         this.errorMessage = response.message || 'Erreur lors de la connexion.';
       }
     } catch (error) {
       console.error('Erreur inattendue:', error);
-      this.errorMessage = 'Une erreur inattendue est survenue. Veuillez réessayer plus tard.';
+      this.toastService.showToast('Une erreur inattendue est survenue.', 'error');
+      this.errorMessage =
+        'Une erreur inattendue est survenue. Veuillez réessayer plus tard.';
     }
   }
 
