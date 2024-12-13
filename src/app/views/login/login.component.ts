@@ -15,39 +15,53 @@ export class LoginComponent {
   username: string = '';
   password: string = '';
   rememberMe: boolean = false;
+  errorMessage: string | null = null;
 
   constructor(private router: Router, private authService: AuthService) {}
 
   async login(event: Event): Promise<void> {
     event.preventDefault();
+    this.errorMessage = null; // Réinitialise le message d'erreur
 
-    // Ici, vous implémenteriez la logique d'authentification
     console.log('Tentative de connexion avec:', {
       username: this.username,
       password: this.password,
       rememberMe: this.rememberMe,
     });
 
-   try {
-    const response = await this.authService.login({
-      email: this.username,
-      password: this.password,
-    });
+    try {
+      const response = await this.authService.login({
+        email: this.username,
+        password: this.password,
+      });
 
-    this.router.navigate(['/dashboard']);
-   } catch (error) {
-    console.error('Erreur lors de la connexion:', error);
+      if (response.statusCode === 200) {
+        console.log('Connexion réussie:', response.token);
+
+        // Gérer l'option "Se souvenir de moi"
+        if (this.rememberMe) {
+          localStorage.setItem('token', response.token!);
+        } else {
+          sessionStorage.setItem('token', response.token!);
+        }
+
+        // Redirige vers le tableau de bord
+        this.router.navigate(['/dashboard']);
+      } else {
+        console.error('Erreur:', response.message || response.error);
+        this.errorMessage = response.message || 'Erreur lors de la connexion.';
+      }
+    } catch (error) {
+      console.error('Erreur inattendue:', error);
+      this.errorMessage = 'Une erreur inattendue est survenue. Veuillez réessayer plus tard.';
     }
-
   }
 
   loginWithGoogle(): void {
-    // Implémentation de la connexion Google
     console.log('Connexion avec Google');
   }
 
   loginWithFacebook(): void {
-    // Implémentation de la connexion Facebook
     console.log('Connexion avec Facebook');
   }
 }

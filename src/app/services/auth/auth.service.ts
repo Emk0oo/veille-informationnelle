@@ -2,6 +2,13 @@ import { Injectable } from '@angular/core';
 import { User, UserLogin, UserRegister } from '../../models/user';
 import { environment } from '../../environments/environment.recette';
 
+interface AuthResponse {
+  statusCode: number;
+  token?: string;
+  message?: string;
+  error?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -10,7 +17,7 @@ export class AuthService {
 
   constructor() {}
 
-  async login(user: UserLogin): Promise<User> {
+  async login(user: UserLogin): Promise<AuthResponse> {
     try {
       const response = await fetch(`${this.apiURL}/auth/login`, {
         method: 'POST',
@@ -20,21 +27,26 @@ export class AuthService {
         },
         body: JSON.stringify(user)
       });
-      console.log(user);
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Erreur lors de la connexion');
-      }
+      const statusCode = response.status;
 
-      return await response.json();
+      // Récupérer la réponse JSON
+      const data = await response.json();
+
+      return {
+        statusCode,
+        ...data
+      };
     } catch (error) {
       console.error('Erreur lors de la connexion:', error);
-      throw error;
+      return {
+        statusCode: 500,
+        error: 'Erreur interne'
+      };
     }
   }
 
-  async register(user: UserRegister): Promise<User> {
+  async register(user: UserRegister): Promise<AuthResponse> {
     try {
       const response = await fetch(`${this.apiURL}/auth/register`, {
         method: 'POST',
@@ -45,15 +57,33 @@ export class AuthService {
         body: JSON.stringify(user)
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Erreur lors de l\'inscription');
-      }
+      const statusCode = response.status;
 
-      return await response.json();
+      // Récupérer la réponse JSON
+      const data = await response.json();
+
+      return {
+        statusCode,
+        ...data
+      };
     } catch (error) {
       console.error('Erreur lors de l\'inscription:', error);
-      throw error;
+      return {
+        statusCode: 500,
+        error: 'Erreur interne'
+      };
     }
+  }
+
+  setToken(token: string): void {
+    localStorage.setItem('token', token);
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  deleteToken(): void {
+    localStorage.removeItem('token');
   }
 }
