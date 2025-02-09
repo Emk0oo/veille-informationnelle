@@ -1,91 +1,169 @@
-<!-- login.component.html -->
-<div class="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-    <div class="max-w-md w-full bg-white rounded-lg shadow-lg p-8 space-y-6">
-        <div class="text-center">
-            <h1 class="text-3xl font-bold text-gray-900">Connexion</h1>
-            <p class="mt-2 text-sm text-gray-600">Connectez-vous à votre compte</p>
+<div class="min-h-screen flex items-center justify-center bg-gray-100 px-4 overflow-hidden">
+  <div class="relative w-full max-w-md">
+    <!-- Login Form -->
+    <div *ngIf="isLogin" [@slideInOut]="isLogin ? 'login' : 'register'"
+         class="w-full bg-white rounded-lg shadow-lg p-8 space-y-6">
+      <div class="text-center">
+        <h1 class="text-3xl font-bold text-gray-900">Connexion</h1>
+        <p class="mt-2 text-sm text-gray-600">Connectez-vous à votre compte</p>
+      </div>
+
+      <form (ngSubmit)="onSubmit($event)" class="space-y-6">
+        <!-- Username field -->
+        <div class="space-y-2">
+          <label for="username" class="block text-sm font-medium text-gray-700">
+            Nom d'utilisateur
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
+              </svg>
+            </div>
+            <input type="text" id="username" name="username" [(ngModel)]="username" required
+                   class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                   placeholder="Entrez votre nom d'utilisateur">
+          </div>
         </div>
 
-        <form (ngSubmit)="login($event)" class="space-y-6">
-            <!-- Champ Username -->
-            <div class="space-y-2">
-                <label for="username" class="block text-sm font-medium text-gray-700">
-                    Nom d'utilisateur
-                </label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
-                        </svg>
-                    </div>
-                    <input 
-                        type="text" 
-                        id="username" 
-                        name="username" 
-                        [(ngModel)]="username"
-                        required
-                        class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
-                        placeholder="Entrez votre nom d'utilisateur"
-                    >
-                </div>
+        <!-- Password field -->
+        <div class="space-y-2">
+          <label for="password" class="block text-sm font-medium text-gray-700">
+            Mot de passe
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+              </svg>
             </div>
-
-            <!-- Champ Password -->
-            <div class="space-y-2">
-                <label for="password" class="block text-sm font-medium text-gray-700">
-                    Mot de passe
-                </label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
-                        </svg>
-                    </div>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        name="password" 
-                        [(ngModel)]="password"
-                        required
-                        class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
-                        placeholder="Entrez votre mot de passe"
-                    >
-                </div>
-            </div>
-
-            <!-- Options supplémentaires -->
-            <div class="flex items-center justify-between">
-                <div class="text-sm">
-                    <a routerLink="/forgot-password" class="font-medium text-blue-600 hover:text-blue-500">
-                        Mot de passe oublié?
-                    </a>
-                </div>
-            </div>
-
-            <!-- Bouton de connexion -->
-            <button 
-                type="submit"
-                class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out"
-            >
-                Se connecter
-            </button>
-        </form>
-
-        <!-- Séparateur -->
-        <div class="relative">
-            <div class="absolute inset-0 flex items-center">
-                <div class="w-full border-t border-gray-300"></div>
-            </div>
-            <div class="relative flex justify-center text-sm">
-                <span class="px-2 bg-white text-gray-500">Vous n'avez pas de compte?</span>
-            </div>
-        </div>        
-
-        <!-- Lien d'inscription -->
-        <div class="text-center text-sm">
-            <a routerLink="/register" class="font-medium text-blue-600 hover:text-blue-500 ml-1">
-                Inscrivez-vous
-            </a>
+            <input type="password" id="password" name="password" [(ngModel)]="password" required
+                   class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                   placeholder="Entrez votre mot de passe">
+          </div>
         </div>
+
+        <button type="submit"
+                class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          Se connecter
+        </button>
+      </form>
+
+      <div class="text-center text-sm">
+        <span class="text-gray-600">Vous n'avez pas de compte?</span>
+        <button (click)="toggleForm()" class="font-medium text-blue-600 hover:text-blue-500 ml-1">
+          Inscrivez-vous
+        </button>
+      </div>
     </div>
+
+    <!-- Register Form -->
+    <div *ngIf="!isLogin" [@slideRegister]="isLogin ? 'login' : 'register'"
+         class="w-full bg-white rounded-lg shadow-lg p-8 space-y-6">
+      <div class="text-center">
+        <h1 class="text-3xl font-bold text-gray-900">Inscription</h1>
+        <p class="mt-2 text-sm text-gray-600">Créez votre compte</p>
+      </div>
+
+      <form (ngSubmit)="register($event)" class="space-y-6">
+
+        <!-- Name field -->
+        <div class="space-y-2">
+          <label for="register-name" class="block text-sm font-medium text-gray-700">
+            Prénom
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
+              </svg>
+            </div>
+            <input type="text" id="register-name" name="name" [(ngModel)]="registerName" required
+                   class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                   placeholder="Entrez votre prénom">
+          </div>
+        </div>
+
+        <!-- Surname field -->
+        <div class="space-y-2">
+          <label for="register-surname" class="block text-sm font-medium text-gray-700">
+            Nom
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
+              </svg>
+            </div>
+            <input type="text" id="register-surname" name="surname" [(ngModel)]="registerSurname" required
+                   class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                   placeholder="Entrez votre nom">
+          </div>
+        </div>
+        <!-- Email field -->
+        <div class="space-y-2">
+          <label for="register-email" class="block text-sm font-medium text-gray-700">
+            Email
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+              </svg>
+            </div>
+            <input type="email" id="register-email" name="email" [(ngModel)]="registerEmail" required
+                   class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                   placeholder="Entrez votre email">
+          </div>
+        </div>
+
+        <!-- Username field -->
+        <div class="space-y-2">
+          <label for="register-username" class="block text-sm font-medium text-gray-700">
+            Nom d'utilisateur
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
+              </svg>
+            </div>
+            <input type="text" id="register-username" name="username" [(ngModel)]="registerUsername" required
+                   class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                   placeholder="Choisissez un nom d'utilisateur">
+          </div>
+        </div>
+
+        <!-- Password field -->
+        <div class="space-y-2">
+          <label for="register-password" class="block text-sm font-medium text-gray-700">
+            Mot de passe
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+            <input type="password" id="register-password" name="password" [(ngModel)]="registerPassword" required
+                   class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                   placeholder="Choisissez un mot de passe">
+          </div>
+        </div>
+
+        <button type="submit"
+                class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          S'inscrire
+        </button>
+      </form>
+
+      <div class="text-center text-sm">
+        <span class="text-gray-600">Déjà un compte?</span>
+        <button (click)="toggleForm()" class="font-medium text-blue-600 hover:text-blue-500 ml-1">
+          Connectez-vous
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

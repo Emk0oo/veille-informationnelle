@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { ToastService } from '../../services/toast/toast.service';
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-toast',
   standalone: true,
-  imports: [NgIf, NgClass, AsyncPipe],
+  imports: [NgClass, AsyncPipe],
   templateUrl: './toast.component.html',
   animations: [
     trigger('toastAnimation', [
