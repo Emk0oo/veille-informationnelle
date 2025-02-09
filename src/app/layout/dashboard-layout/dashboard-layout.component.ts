@@ -1,4 +1,3 @@
-// dashboard-layout.component.ts
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -12,8 +11,13 @@ import { CommonModule } from '@angular/common';
 })
 export class DashboardLayoutComponent {
   isSidebarOpen = true;
+  isMobileMenuOpen = false;
 
-  toggleSidebar() {
+  toggleSidebar(): void {
     this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
 }
